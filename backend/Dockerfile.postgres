@@ -3,6 +3,6 @@ FROM postgres:latest
 
 ENV POSTGRES_USER=postgres
 ENV POSTGRES_PASSWORD=postgres
-ENV POSTGRES_DB=employees
+ENV POSTGRES_DB=photo_aggr
 
 EXPOSE 5432

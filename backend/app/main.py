@@ -1,6 +1,7 @@
-from routers import client_router, service_router, order_router, request_router, phototgrapher_router
+from routers import client_router, service_router, order_router, request_router, phototgrapher_router, user_router
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from prometheus_fastapi_instrumentator import Instrumentator
 
 app = FastAPI()
 
@@ -19,7 +20,11 @@ app.include_router(phototgrapher_router.router, prefix="/photographers", tags=["
 app.include_router(order_router.router, prefix="/orders", tags=["orders"])
 app.include_router(request_router.router, prefix="/requests", tags=["requests"])
 app.include_router(service_router.router, prefix="/services", tags=["services"])
+app.include_router(user_router.router, prefix="/users", tags=["users"])
+
 
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
+Instrumentator().instrument(app).expose(app)

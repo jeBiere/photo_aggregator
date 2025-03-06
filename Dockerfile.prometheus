@@ -1,0 +1,5 @@
+# Используем официальный образ Prometheus
+FROM prom/prometheus:latest
+
+# Копируем ваш файл prometheus.yml в контейнер
+COPY prometheus.yml /etc/prometheus/prometheus.yml

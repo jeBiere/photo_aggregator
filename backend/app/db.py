@@ -1,6 +1,8 @@
 import os
 import psycopg2
 from pymongo import MongoClient
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 # Подключение к MongoDB
 mongo_host = os.getenv("MONGO_HOST", "mongodb")
@@ -16,23 +18,25 @@ services_collection = db["services"]
 requests_collection = db["requests"]
 
 # Подключение к PostgreSQL
-postgres_host = os.getenv("POSTGRES_HOST", "postgres")
+postgres_host = os.getenv("POSTGRES_HOST", "postgres-1")
 postgres_user = os.getenv("POSTGRES_USER", "postgres")
 postgres_password = os.getenv("POSTGRES_PASSWORD", "postgres")
-postgres_db = os.getenv("POSTGRES_DB", "employees")
+postgres_db = os.getenv("POSTGRES_DB", "photo_aggr")
 
-def get_postgres_connection():
-    return psycopg2.connect(
-        dbname=postgres_db,
-        user=postgres_user,
-        password=postgres_password,
-        host=postgres_host
-    )
+SQLALCHEMY_DATABASE_URL = f"postgresql://{postgres_user}:{postgres_password}@{postgres_host}/{postgres_db}"
 
-# Коллекция employees из PostgreSQL
-def get_employees_collection():
-    conn = get_postgres_connection()
-    cur = conn.cursor()
-    return conn, cur
+
+# Создаем объект для работы с базой данных
+engine = create_engine(SQLALCHEMY_DATABASE_URL)
+
+# Создаем функцию для получения сессии
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 

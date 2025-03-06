@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 services:
   postgres:
     build:
@@ -8,11 +8,13 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: employees
+      POSTGRES_DB: photo_aggr
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    networks:
+      - monitoring
   mongodb:
     build:
       context: ./backend
@@ -23,7 +25,8 @@ services:
     volumes:
       - mongo-data:/data/db
       - ./backend/photo_aggr:/docker-entrypoint-initdb.d/photo_aggr
-
+    networks:
+      - monitoring
   api_server:
     build:
       context: ./backend
@@ -35,13 +38,15 @@ services:
       POSTGRES_HOST: postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: employees
+      POSTGRES_DB: photo_aggr
     ports:
       - "8000:8000"
     depends_on:
       - postgres
       - mongodb
     restart: on-failure
+    networks:
+      - monitoring
 
   frontend:
     build:
@@ -50,7 +55,35 @@ services:
     container_name: vue-app
     ports:
       - "8080:8080"
+    networks:
+      - monitoring
+  prometheus:
+    build:
+      context: .
+      dockerfile: Dockerfile.prometheus # Указание Dockerfile для кастомного образа
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      - monitoring
 
 volumes:
   pgdata:
   mongo-data:
+  grafana_data:
+
+networks:
+  monitoring:
