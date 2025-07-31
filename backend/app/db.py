@@ -1,8 +1,11 @@
 import os
 import psycopg2
+from models.user import User
+from models.order import Order
 from pymongo import MongoClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from models.base import Base
 
 # Подключение к MongoDB
 mongo_host = os.getenv("MONGO_HOST", "mongodb")
@@ -12,9 +15,6 @@ client = MongoClient(f"mongodb://{mongo_host}:{mongo_port}/")
 db = client[mongo_db]
 
 photographers_collection = db["photographers"]
-clients_collection = db["clients"]
-orders_collection = db["orders"]
-services_collection = db["services"]
 requests_collection = db["requests"]
 
 # Подключение к PostgreSQL
@@ -28,7 +28,7 @@ SQLALCHEMY_DATABASE_URL = f"postgresql://{postgres_user}:{postgres_password}@{po
 
 # Создаем объект для работы с базой данных
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
-
+#Base.metadata.create_all(bind=engine, checkfirst=True)
 # Создаем функцию для получения сессии
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

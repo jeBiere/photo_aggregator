@@ -1,6 +1,23 @@
 <template>
-  <button class="standard-button">{{ label }}</button>
+  <button class="standard-button bg-orange-100" :type="type">
+    <slot>{{ label }}</slot>
+  </button>
 </template>
+
+<script setup>
+import { defineProps } from 'vue'
+
+const props = defineProps({
+  label: {
+    type: String,
+    default: ''
+  },
+  type: {
+    type: String,
+    default: 'button'
+  }
+})
+</script>
 
 <style>
 .standard-button {
@@ -11,14 +28,3 @@
         uppercase;
 }
 </style>
-
-<script setup>
-import { defineProps } from 'vue'
-
-const props = defineProps({
-  label: {
-    type: String,
-    required: true
-  }
-})
-</script>

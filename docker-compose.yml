@@ -15,6 +15,7 @@ services:
       - pgdata:/var/lib/postgresql/data
     networks:
       - monitoring
+
   mongodb:
     build:
       context: ./backend
@@ -27,10 +28,13 @@ services:
       - ./backend/photo_aggr:/docker-entrypoint-initdb.d/photo_aggr
     networks:
       - monitoring
+
   api_server:
     build:
       context: ./backend
       dockerfile: Dockerfile.api_server
+    volumes:
+      - ./backend/static:/app/static
     container_name: api-server-1
     environment:
       MONGO_URI: "mongodb://mongodb:27017/"
@@ -52,15 +56,20 @@ services:
     build:
       context: ./frontend/vue-lessons
       dockerfile: Dockerfile.vue-app
-    container_name: vue-app
     ports:
-      - "8080:8080"
+      - "5173:5173" # Совпадает с vite.config.js
+    volumes:
+      - ./frontend/vue-lessons:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
     networks:
       - monitoring
+
   prometheus:
     build:
       context: .
-      dockerfile: Dockerfile.prometheus # Указание Dockerfile для кастомного образа
+      dockerfile: Dockerfile.prometheus
     container_name: prometheus
     ports:
       - "9090:9090"

@@ -1,39 +1,57 @@
-from typing import Optional
-from pydantic import BaseModel, Field, EmailStr
+from pydantic import BaseModel, EmailStr
 from datetime import datetime
+from typing import Optional
+from enum import Enum
 
-# Базовая схема (общая для других)
+# Перечисление ролей пользователя
+class UserRole(str, Enum):
+    client = "client"
+    photographer = "photographer"
+    admin = "admin"
+
+# Базовая схема пользователя (общая)
 class UserBase(BaseModel):
+    first_name: str
+    last_name: str
     login: str
     email: EmailStr
-    is_active: bool = True  # Флаг активности пользователя
-    registration_date: datetime
+    phone: Optional[str] = None
+    city: str
+    avatar_url: Optional[str] = None
+    status: str = "active"
+    role: UserRole = UserRole.client  # Используем перечисление для роли
 
-# Схема для создания нового пользователя (при регистрации)
-class UserCreate(BaseModel):
-    login: str
-    email: EmailStr
-    password: str  # Передаётся в открытом виде, будет хешироваться
-    registration_date: datetime = Field(default_factory=datetime.now)
+# Схема для создания пользователя (регистрация)
+class UserCreate(UserBase):
+    password: str  # Передается открытым текстом, будет хешироваться
 
-# Схема для обновления пользователя (например, смена email или пароля)
+# Схема для обновления пользователя
 class UserUpdate(BaseModel):
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
     email: Optional[EmailStr] = None
+    phone: Optional[str] = None
+    city: Optional[str] = None
+    avatar_url: Optional[str] = None
+    status: Optional[str] = None
+    role: Optional[UserRole] = None
     password: Optional[str] = None
-    is_active: Optional[bool] = None
 
-# Схема для входа в систему
-class UserLogin(BaseModel):
-    login: str = Field(..., alias="username")
-    password: str
-
-    class Config:
-        allow_population_by_field_name = True
-
-# Схема пользователя, который хранится в БД (с уже хешированным паролем)
+# Схема пользователя, хранящегося в БД
 class UserInDB(UserBase):
-    hashed_password: str  # Показываем уже хешированный пароль
-
+    user_id: int
+    password_hash: str
+    created_at: datetime
+    updated_at: datetime
+  
     class Config:
         orm_mode = True
         from_attributes = True
+
+# Схема для логина пользователя
+class UserLogin(BaseModel):
+    login: str  # Логин
+    password: str  # Пароль (в открытом виде)
+
+    class Config:
+        orm_mode = True

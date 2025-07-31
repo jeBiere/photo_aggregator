@@ -1,45 +1,87 @@
-from fastapi import HTTPException
-from db import orders_collection
-from models.order import Order
-from schemas.order import OrderInDB, OrderCreate, OrderUpdate
-from utils.sequences import get_next_sequence_value
-from typing import List
+from sqlalchemy.orm import Session
+from models.photographer import Photographer
+from models.order import Order, OrderStatusEnum
+from schemas.order import OrderCreate, OrderUpdate
+from datetime import datetime, timedelta
 
+def get_order(db: Session, order_id: int):
+    return db.query(Order).filter(Order.order_id == order_id).first()
 
+def get_orders(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(Order).offset(skip).limit(limit).all()
 
+def get_orders_by_user_id(db: Session, user_id: int):
+    return db.query(Order).filter(Order.user_id == user_id).all()
 
-async def get_orders() -> List[OrderInDB]:
-    orders = orders_collection.find()
-    return [OrderInDB(**order) for order in orders]
+def get_orders_by_photographer_user_id(db: Session, user_id: int):
+    photographer = db.query(Photographer).filter(Photographer.user_id == user_id).first()
+    
+    if not photographer:
+        return None  # Обработка будет в router
 
+    return db.query(Order).filter(Order.photographer_id == photographer.photographer_id).all()
 
-async def get_order(order_id: int) -> OrderInDB:
-    order = orders_collection.find_one({"_id": order_id})
-    if order:
-        return OrderInDB(**order)
-    raise HTTPException(status_code=404, detail="Order not found")
+def create_order(db: Session, order: OrderCreate):
+    db_order = Order(**order.dict())
+    db.add(db_order)
+    db.commit()
+    db.refresh(db_order)
+    return db_order
 
+def update_order(db: Session, order_id: int, updates: OrderUpdate):
+    db_order = db.query(Order).filter(Order.order_id == order_id).first()
+    if db_order:
+        for field, value in updates.dict(exclude_unset=True).items():
+            setattr(db_order, field, value)
+        db_order.updated_at = datetime.utcnow()
+        db.commit()
+        db.refresh(db_order)
+    return db_order
 
-async def create_order(order_data: OrderCreate) -> OrderInDB:
-    order_id = get_next_sequence_value("orders")
-    order_dict = order_data.dict()
-    order_dict["_id"] = order_id
-    orders_collection.insert_one(order_dict)
-    return OrderInDB(**order_dict)
+def delete_order(db: Session, order_id: int):
+    db_order = db.query(Order).filter(Order.order_id == order_id).first()
+    if db_order:
+        db.delete(db_order)
+        db.commit()
+    return db_order
 
+def cancel_order(db: Session, order_id: int):
+    db_order = db.query(Order).filter(Order.order_id == order_id).first()
+    if db_order:
+        db_order.status = OrderStatusEnum.cancelled
+        db_order.updated_at = datetime.utcnow()
+        db.commit()
+        db.refresh(db_order)
+    return db_order
 
-async def update_order(order_id: int, order_data: OrderUpdate) -> OrderInDB:
-    existing_order = orders_collection.find_one({"_id": order_id})
-    if existing_order:
-        updated_order_data = order_data.dict(exclude_unset=True)
-        updated_order = {**existing_order, **updated_order_data}
-        orders_collection.update_one({"_id": order_id}, {"$set": updated_order})
-        return OrderInDB(**updated_order)
-    raise HTTPException(status_code=404, detail="Order not found")
+def confirm_order_by_photographer(db: Session, order_id: int):
+    db_order = db.query(Order).filter(Order.order_id == order_id).first()
+    if db_order and db_order.status == OrderStatusEnum.pending:
+        db_order.status = OrderStatusEnum.in_progress
+        db_order.updated_at = datetime.utcnow()
+        db.commit()
+        db.refresh(db_order)
+        return db_order
+    return None
 
+def complete_order_by_photographer(db: Session, order_id: int):
+    db_order = db.query(Order).filter(Order.order_id == order_id).first()
+    if db_order and db_order.status != OrderStatusEnum.cancelled:
+        db_order.status = OrderStatusEnum.completed
+        db_order.updated_at = datetime.utcnow()
+        db.commit()
+        db.refresh(db_order)
+        return db_order
+    return None
 
-async def delete_order(order_id: str):
-    result = orders_collection.delete_one({"_id": order_id})
-    if result.deleted_count == 1:
-        return {"message": "Order deleted successfully"}
-    raise HTTPException(status_code=404, detail="Order not found")
+def delete_old_cancelled_orders(db: Session):
+    cutoff_date = datetime.utcnow() - timedelta(weeks=26)  # 6 месяцев
+
+    # Удаляем заказы с нужными условиями
+    deleted_orders = db.query(Order).filter(
+        Order.status == "cancelled",
+        Order.updated_at < cutoff_date
+    ).delete(synchronize_session=False)
+
+    db.commit() 
+    print(f"Deleted {deleted_orders} old cancelled orders.")

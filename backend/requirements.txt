@@ -1,7 +1,9 @@
 fastapi==0.68.0
 uvicorn==0.15.0
 pymongo==3.11.4
+apscheduler
 psycopg2-binary
+alembic
 sqlalchemy
 passlib
 pyjwt

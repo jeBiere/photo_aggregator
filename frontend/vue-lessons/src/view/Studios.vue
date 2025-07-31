@@ -1,12 +1,54 @@
 <template>
-  <div class="flex flex-col bg-white w-full m-8 p-8 rounded-3xl">
-    <div class="mb-5">
-      <h1 class="text-3xl text-slate-600 text-center uppercase mx-10 border-b-2">Studios</h1>
+  <div class="studios-page w-full mx-auto">
+    <div class="studios-list w-full">
+      <StudioCard
+        class="w-full"
+        v-for="studio in studios"
+        :key="studio.studio_id"
+        :studio="studio"
+      />
     </div>
-    <div>List of studios withc address name and description</div>
   </div>
 </template>
 
-<script setup></script>
+<script>
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
+import StudioCard from './Studio/StudioCard.vue'
 
-<style scoped></style>
+export default {
+  name: 'StudiosList',
+  components: { StudioCard },
+  setup() {
+    const studios = ref([])
+
+    const fetchStudios = async () => {
+      const response = await axios.get('http://localhost:8000/studios/')
+      studios.value = response.data
+    }
+
+    onMounted(() => {
+      fetchStudios()
+    })
+
+    return {
+      studios
+    }
+  }
+}
+</script>
+
+<style scoped>
+.studios-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.studios-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+</style>

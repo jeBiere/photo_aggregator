@@ -1,47 +1,108 @@
 <template>
-  <div class="flex flex-col bg-white w-full m-8 p-8 rounded-3xl">
-    <div class="mb-5">
-      <h1 class="text-3xl text-slate-600 text-center uppercase mx-10 border-b-2">Photographers</h1>
-    </div>
+  <div class="photographers-page w-full mx-auto">
+    <!-- Используем новый компонент фильтров -->
+    <FiltersCard @apply-filters="handleFiltersChange" />
 
-    <CardList :items="photographers" :onClickAdd="onClickAdd">
-      <template v-slot:default="{ item, onClickAdd }">
-        <Card
-          :key="item._id"
-          :title="item.name"
-          :price="item.expirience"
-          :isAdded="false"
-          :onClickAdd="onClickAdd"
-        />
-      </template>
-    </CardList>
+    <!-- Блок с карточками -->
+    <div v-if="isLoading" class="loading">Загрузка...</div>
+    <div v-else-if="error" class="error">{{ error }}</div>
+    <div v-else class="photographers-list w-full">
+      <PhotographerCard
+        class="w-full"
+        v-for="photographer in photographers"
+        :key="photographer.photographer_id"
+        :photographer="photographer"
+      />
+    </div>
   </div>
 </template>
 
-<script setup>
+<script>
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
-import CardList from '../components/CardList.vue'
-import Card from '../components/Card.vue'
+import PhotographerCard from './Photographers/PhotographerCard.vue'
+import FiltersCard from './Photographers/Filters.vue'
 
-const photographers = ref([])
+export default {
+  name: 'PhotographersList',
+  components: { PhotographerCard, FiltersCard },
+  setup() {
+    const photographers = ref([])
+    const isLoading = ref(true)
+    const error = ref(null)
 
-const fetchPhotographers = async () => {
-  try {
-    const response = await axios.get('http://localhost:8000/photographers')
-    photographers.value = response.data
-  } catch (error) {
-    console.error('Error fetching photographers:', error)
+    const handleFiltersChange = async (filters) => {
+      await fetchPhotographers(filters)
+    }
+
+    const fetchPhotographers = async (filters = {}) => {
+      isLoading.value = true
+      error.value = null
+
+      try {
+        const response = await axios.post('http://localhost:8000/photographers/recommendations/', {
+          city: filters.city || '',
+          specializations: filters.specializations || [],
+          max_price: filters.max_price || 15000
+        })
+
+        photographers.value = await Promise.all(
+          response.data.map(async (photographer) => {
+            const userResponse = await axios.get(
+              `http://localhost:8000/users/user_by_id/${photographer.user_id}`
+            )
+            const specsResponse = await axios.get(
+              `http://localhost:8000/photographers/${photographer.photographer_id}/specializations`
+            )
+
+            return {
+              ...photographer,
+              user: userResponse.data,
+              specializations: specsResponse.data
+            }
+          })
+        )
+      } catch (e) {
+        error.value = 'Ошибка при загрузке данных.'
+        console.error(e)
+      } finally {
+        isLoading.value = false
+      }
+    }
+
+    onMounted(() => {
+      fetchPhotographers()
+    })
+
+    return {
+      photographers,
+      isLoading,
+      error,
+      handleFiltersChange
+    }
   }
-}
-
-onMounted(() => {
-  fetchPhotographers()
-})
-
-const onClickAdd = () => {
-  console.log('Added to cart')
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+/* Оставляем существующие стили без изменений */
+.photographers-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.loading,
+.error {
+  font-size: 18px;
+  color: #666;
+  margin-top: 20px;
+}
+
+.photographers-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+</style>

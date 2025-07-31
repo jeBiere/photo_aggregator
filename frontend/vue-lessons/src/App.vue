@@ -1,7 +1,9 @@
 <template>
-  <div id="app" class="flex flex-col">
-    <Header> </Header>
-    <router-view></router-view>
+  <div id="app" class="flex flex-col w-[70%] min-w-[600px] max-w-[1600px] mx-auto">
+    <Header />
+    <transition name="page-fade" mode="out-in">
+      <router-view :key="$route.fullPath"></router-view>
+    </transition>
   </div>
 </template>
 
@@ -18,11 +20,16 @@ export default {
 
 <style src="./assets/main.css"></style>
 
-<style scoped>
-#app {
-  display: flex;
-  align-items: center;
-  height: 100vh;
-  width: 100%;
+<style scoped></style>
+
+<style>
+.page-fade-enter-active,
+.page-fade-leave-active {
+  transition: opacity 0.5s ease-in-out;
+}
+
+.page-fade-enter-from,
+.page-fade-leave-to {
+  opacity: 0;
 }
 </style>

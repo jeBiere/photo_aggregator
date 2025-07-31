@@ -3,12 +3,7 @@
 @tailwind utilities;
 
 body {
-    margin: 0;
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    background-color: #cebaaf; /* Задайте нужный вам цвет */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
+  margin: 0;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  background-color: #cebaaf;
+}
