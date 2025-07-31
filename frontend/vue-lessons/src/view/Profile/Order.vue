@@ -40,9 +40,6 @@
             Complete
           </button>
         </template>
-
-        <!-- Кнопка отмены для клиента -->
-        <!-- Кнопка "Оставить отзыв" или отображение рейтинга -->
         <template v-if="userType === 'client'">
           <!-- Проверка, есть ли отзыв для этого заказа -->
           <template v-if="authStore.isAuthenticated && order.status === 'completed'">

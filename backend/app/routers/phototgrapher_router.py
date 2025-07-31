@@ -43,12 +43,6 @@ def get_relevant_photographers(
     limit: int = 100,
     db: Session = Depends(get_db)
 ):
-    """
-    Получение фотографов с учётом:
-    1. Жёстких фильтров (город, специализации, цена)
-    2. Сортировки по взвешенному рейтингу
-    """
-    # Фильтрация
     photographers = crud_photographer.get_filtered_photographers(
         db,
         city=filters.city,
@@ -56,7 +50,6 @@ def get_relevant_photographers(
         max_price=filters.max_price
     )
     
-    # Сортировка по релевантности
     sorted_photographers = crud_photographer.get_sorted_by_relevance(
         db,
         photographers=photographers,
@@ -72,7 +65,6 @@ def read_user_orders(
     photographer_id: int,
     db: Session = Depends(get_db)
 ):
-    # Проверка существования пользователя может быть здесь или в CRUD
     if not db.query(Photographer).filter(Photographer.photographer_id == photographer_id).first():
         raise HTTPException(status_code=404, detail="Photographer not found")
     

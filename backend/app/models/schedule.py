@@ -17,6 +17,6 @@ class BlockedSlot(Base):
     id = Column(Integer, primary_key=True)
     photographer_id = Column(Integer, ForeignKey("photographers.photographer_id", ondelete="CASCADE"))
     date = Column(Date, nullable=False)
-    start_time = Column(Time, nullable=True)  # NULL = весь день
+    start_time = Column(Time, nullable=True)
     end_time = Column(Time, nullable=True)
     reason = Column(Text)

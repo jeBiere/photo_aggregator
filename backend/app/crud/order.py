@@ -17,7 +17,7 @@ def get_orders_by_photographer_user_id(db: Session, user_id: int):
     photographer = db.query(Photographer).filter(Photographer.user_id == user_id).first()
     
     if not photographer:
-        return None  # Обработка будет в router
+        return None 
 
     return db.query(Order).filter(Order.photographer_id == photographer.photographer_id).all()
 
@@ -77,7 +77,6 @@ def complete_order_by_photographer(db: Session, order_id: int):
 def delete_old_cancelled_orders(db: Session):
     cutoff_date = datetime.utcnow() - timedelta(weeks=26)  # 6 месяцев
 
-    # Удаляем заказы с нужными условиями
     deleted_orders = db.query(Order).filter(
         Order.status == "cancelled",
         Order.updated_at < cutoff_date

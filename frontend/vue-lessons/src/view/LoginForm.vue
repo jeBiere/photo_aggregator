@@ -46,9 +46,9 @@ const loginUser = async () => {
     const token = response.data.access_token
     authStore.setToken(token)
 
-    await authStore.validateToken() // Подгружаем пользователя, если надо
+    await authStore.validateToken()
 
-    router.push('/profile') // Перенаправляем после логина
+    router.push('/profile') 
   } catch (error) {
     console.error(error)
     alert('Ошибка авторизации. Проверьте логин и пароль.')

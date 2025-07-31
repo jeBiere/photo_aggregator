@@ -83,12 +83,10 @@ const statusOrder = {
   cancelled: 3
 }
 
-// Сортировка заказов
 const sortedOrders = computed(() =>
   [...props.orders].sort((a, b) => statusOrder[a.status] - statusOrder[b.status])
 )
 
-// Разделение заказов
 const activeOrders = computed(() =>
   sortedOrders.value.filter((order) => ['pending', 'in_progress'].includes(order.status))
 )
@@ -96,20 +94,17 @@ const completedOrders = computed(() =>
   sortedOrders.value.filter((order) => ['completed', 'cancelled'].includes(order.status))
 )
 
-// Переключение отображения завершённых заказов
 const showCompleted = ref(false)
 const toggleCompleted = () => {
   showCompleted.value = !showCompleted.value
 }
 
-// Обработка события изменения статуса заказа
 const handleOrderUpdate = (updatedOrder) => {
-  // Обновляем данные локально
   const orderIndex = props.orders.findIndex((order) => order.order_id === updatedOrder.order_id)
   if (orderIndex !== -1) {
     props.orders[orderIndex] = updatedOrder
   }
-  emit('update-order', updatedOrder) // Отправляем обновленный заказ родительскому компоненту
+  emit('update-order', updatedOrder)
 }
 </script>
 

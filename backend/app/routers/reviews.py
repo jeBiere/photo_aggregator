@@ -13,8 +13,6 @@ router = APIRouter()
 @router.post("/", response_model=ReviewInDB)
 def create_review(review: ReviewCreate, db: Session = Depends(get_db)):
     db_review = crud_review.create_review(db, review)
-    
-    # Вручную преобразуем в dict, затем валидируем
     review_data = {
         "review_id": db_review.review_id,
         "order_id": db_review.order_id,
@@ -25,7 +23,7 @@ def create_review(review: ReviewCreate, db: Session = Depends(get_db)):
         "created_at": db_review.created_at
     }
     
-    return ReviewInDB.parse_obj(review_data)  # ← Явная валидация
+    return ReviewInDB.parse_obj(review_data)
 
 @router.get("/", response_model=List[ReviewInDB])
 def read_reviews(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):

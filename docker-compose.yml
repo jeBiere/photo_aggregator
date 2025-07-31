@@ -57,7 +57,7 @@ services:
       context: ./frontend/vue-lessons
       dockerfile: Dockerfile.vue-app
     ports:
-      - "5173:5173" # Совпадает с vite.config.js
+      - "5173:5173" 
     volumes:
       - ./frontend/vue-lessons:/app
       - /app/node_modules

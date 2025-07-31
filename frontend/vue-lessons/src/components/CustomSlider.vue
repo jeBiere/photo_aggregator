@@ -1,8 +1,6 @@
 <template>
   <div class="w-full py-6 flex flex-col items-center">
-    <!-- Тонкая бежевая линия с делениями -->
     <div ref="trackRef" class="relative w-full max-w-md h-1 bg-slate-200 rounded-full">
-      <!-- Деления -->
       <div
         v-for="n in 5"
         :key="n"
@@ -10,7 +8,6 @@
         :style="{ left: `${(n - 1) * 25}%`, transform: 'translateX(-50%) translateY(-50%)' }"
       ></div>
 
-      <!-- Кружок -->
       <div
         ref="thumbRef"
         class="relative z-10 w-8 h-8 text-white text-lg font-bold flex items-center justify-center rounded-full cursor-pointer transition-transform duration-200 select-none"
@@ -19,7 +16,6 @@
         @mousedown="startDrag"
       >
         {{ rating }}
-        <!-- Элемент для кольцевой анимации -->
         <div v-if="rating === 5 && !isDragging" class="circle-wave"></div>
       </div>
     </div>
@@ -65,7 +61,7 @@
 <script setup>
 import { ref, onMounted, watch, computed } from 'vue'
 
-const rating = defineModel('rating', { default: 0 }) // для v-model:rating
+const rating = defineModel('rating', { default: 0 })
 const sliderPos = ref(0)
 const isDragging = ref(false)
 
@@ -111,7 +107,6 @@ const triggerAnimation = () => {
   )
 
   if (rating.value === 5) {
-    // Запускаем волновую анимацию
     const waveEl = thumbRef.value.querySelector('.circle-wave')
     waveEl?.classList.add('active')
   }

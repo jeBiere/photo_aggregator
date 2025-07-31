@@ -8,7 +8,7 @@ from crud import studio as crud_studio
 from db import get_db
 from utils.jwt_utils import require_photographer, get_current_user
 from utils.email_utils import schedule_studio_notification
-from authx import TokenPayload  # если используешь
+from authx import TokenPayload
 
 router = APIRouter()
 

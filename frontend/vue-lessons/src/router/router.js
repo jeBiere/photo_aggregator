@@ -47,19 +47,15 @@ const router = createRouter({
   routes
 })
 
-// 🔐 Глобальный хук проверки авторизации
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
 
-  // Дождись завершения проверки токена
   await authStore.validateToken()
 
-  // Защищённые маршруты
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
     return next('/login')
   }
 
-  // Залогиненный пользователь не должен видеть /login
   if (to.path === '/login' && authStore.isAuthenticated) {
     return next('/profile')
   }

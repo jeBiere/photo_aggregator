@@ -42,7 +42,6 @@
       </form>
 
       <!-- Шаг 2: Информация о фотографе -->
-      <!-- Шаг 2: Информация о фотографе -->
       <form @submit.prevent="registerPhotographer" class="w-1/2 flex flex-col space-y-8 mt-8 pl-4">
         <h2 class="text-xl text-slate-700 text-center font-semibold mb-4">
           Заполните данные о себе
@@ -137,7 +136,6 @@ const registerPhotographer = async () => {
       experience_years: Number(photographer.value.experience_years),
       city: user.value.city,
       price_per_hour: Number(photographer.value.price_per_hour)
-      // пока не отправляем специализации
     })
 
     alert('Фотограф зарегистрирован!')
@@ -155,9 +153,8 @@ const handleStepOne = () => {
   }
 
   if (isPhotographer.value) {
-    step.value = 2 // не отправляем запрос, только переходим к следующему шагу
+    step.value = 2 
   } else {
-    // обычный пользователь — сразу регистрируем
     registerPhotographer()
   }
 }

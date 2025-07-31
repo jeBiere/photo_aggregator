@@ -15,12 +15,12 @@ app = FastAPI()
 
 @app.on_event("startup")
 def on_startup():
-    start_scheduler()  # Запускаем планировщик при старте
+    start_scheduler()
 
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Можно указать конкретные домены
+    allow_origins=["*"], 
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["*"],

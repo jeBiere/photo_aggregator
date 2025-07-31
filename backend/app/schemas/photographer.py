@@ -5,11 +5,11 @@ from models.specialization import SpecializationTypeEnum
 
 
 class PhotographerBase(BaseModel):
-    description: Optional[str] = None  # Описание (не обязательно)
-    experience_years: Optional[conint(ge=0)] = None  # Стаж (лет), не может быть отрицательным
-    rating: Optional[condecimal(ge=0, le=5, max_digits=3, decimal_places=2)] = 0.00  # Рейтинг от 0 до 5
-    is_active: Optional[bool] = True  # Активен ли профиль
-    price_per_hour: Optional[condecimal(max_digits=10, decimal_places=2)] = None  # Ставка (руб/час)
+    description: Optional[str] = None 
+    experience_years: Optional[conint(ge=0)] = None 
+    rating: Optional[condecimal(ge=0, le=5, max_digits=3, decimal_places=2)] = 0.00 
+    is_active: Optional[bool] = True  
+    price_per_hour: Optional[condecimal(max_digits=10, decimal_places=2)] = None 
     city : Optional[str] = None
 
     class Config:
@@ -17,7 +17,7 @@ class PhotographerBase(BaseModel):
 
 
 class PhotographerCreate(PhotographerBase):
-    user_id: int  # ID пользователя, который будет связан с фотографом
+    user_id: int 
 
 
 class PhotographerUpdate(BaseModel):
@@ -30,11 +30,11 @@ class PhotographerUpdate(BaseModel):
 
 
 class PhotographerInDB(PhotographerBase):
-    photographer_id: int  # Уникальный идентификатор фотографа
-    user_id: int  # ID пользователя, который связан с фотографом
+    photographer_id: int  
+    user_id: int 
 
     class Config:
-        orm_mode = True  # Указывает на использование ORM модели при ответах API
+        orm_mode = True 
         from_attributes = True
 
 class PhotographerFilterParams(BaseModel):

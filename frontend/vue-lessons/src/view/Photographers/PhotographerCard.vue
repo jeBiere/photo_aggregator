@@ -61,12 +61,12 @@ const showModal = ref(false)
 
 const showDetails = () => {
   showModal.value = true
-  document.body.style.overflow = 'hidden' // Блокируем скролл страницы
+  document.body.style.overflow = 'hidden' 
 }
 
 const hideDetails = () => {
   showModal.value = false
-  document.body.style.overflow = '' // Восстанавливаем скролл
+  document.body.style.overflow = '' 
 }
 
 onMounted(async () => {
@@ -80,7 +80,6 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* Оставляем существующие стили без изменений */
 .card {
   display: flex;
   flex-direction: row;

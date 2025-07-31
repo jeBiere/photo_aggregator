@@ -63,7 +63,6 @@ const userId = ref(null)
 
 const authStore = useAuthStore()
 
-// Получаем user_id один раз при монтировании
 onMounted(async () => {
   const { data } = await axios.get('http://localhost:8000/users/me', {
     headers: {

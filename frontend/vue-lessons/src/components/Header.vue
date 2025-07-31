@@ -1,11 +1,9 @@
 <template>
   <div class="bg-white p-6 rounded-3xl mt-4 w-full flex items-center justify-between">
-    <!-- Логотип -->
     <div class="bg-orange-100 text-center p-2 rounded-xl">
       <p>@Photo_aggr</p>
     </div>
 
-    <!-- Меню: занимает всё доступное пространство через margin -->
     <nav class="flex-1 flex justify-around items-center ml-6 px-2 gap-2 flex-wrap">
       <div class="header-element">
         <router-link to="/about">О нас</router-link>
@@ -51,7 +49,7 @@ const isLoggedIn = computed(() => authStore.isAuthenticated)
 
 const handleLogout = () => {
   authStore.logout()
-  router.push('/login') // Сразу уводим пользователя на login
+  router.push('/login') 
 }
 </script>
 

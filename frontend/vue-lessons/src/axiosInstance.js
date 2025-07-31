@@ -5,7 +5,6 @@ const api = axios.create({
   baseURL: 'http://localhost:8000'
 })
 
-// Добавляем токен в каждый запрос
 api.interceptors.request.use((config) => {
   const authStore = useAuthStore()
   if (authStore.token) {

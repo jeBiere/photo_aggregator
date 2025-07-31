@@ -1,6 +1,5 @@
 <template>
   <div class="photographers-page w-full mx-auto">
-    <!-- Используем новый компонент фильтров -->
     <FiltersCard @apply-filters="handleFiltersChange" />
 
     <!-- Блок с карточками -->
@@ -85,7 +84,6 @@ export default {
 </script>
 
 <style scoped>
-/* Оставляем существующие стили без изменений */
 .photographers-page {
   display: flex;
   flex-direction: column;

@@ -62,7 +62,6 @@ async def get_current_user(
 async def require_admin(token: str = Depends(get_token)):
     payload = TokenPayload.decode(token, key=config.JWT_SECRET_KEY)
     
-    # Проверяем, если у пользователя есть нужная роль
     if not payload.role == "admin":
         raise HTTPException(status_code=403, detail="User is not an admin")
     
@@ -71,7 +70,6 @@ async def require_admin(token: str = Depends(get_token)):
 async def require_photographer(token: str = Depends(get_token)):
     payload = TokenPayload.decode(token, key=config.JWT_SECRET_KEY)
     
-    # Если админ — пропускаем
     if payload.role == "admin" or payload.role == 'photographer':
         return payload
     raise HTTPException(status_code=403, detail="User is not a photographer")

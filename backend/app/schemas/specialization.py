@@ -26,8 +26,8 @@ class PhotographerSpecializationBase(BaseModel):
 
 # Схема для создания новой специализации фотографа
 class PhotographerSpecializationCreate(PhotographerSpecializationBase):
-    pass  # Можно добавить дополнительные поля для создания, если потребуется
+    pass  
 
 # Схема для вывода данных (например, в ответах API)
 class PhotographerSpecializationInDB(PhotographerSpecializationBase):
-    pass  # Можно добавить дополнительные поля, если потребуется
+    pass  

@@ -97,7 +97,6 @@ const createItem = async () => {
   }
 }
 
-// Очистка полей при открытии модалки
 watch(
   () => props.open,
   (isOpen) => {

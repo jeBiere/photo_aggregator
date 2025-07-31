@@ -22,7 +22,6 @@ import { useAuthStore } from '@/stores/authStore'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 
-// Профили по ролям
 import ClientProfile from './Client/ClientProfile.vue'
 import PhotographerProfile from './Photographer/PhotographerProfile.vue'
 

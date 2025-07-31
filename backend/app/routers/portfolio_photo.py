@@ -7,7 +7,7 @@ import shutil
 from crud import portfolio_photo as crud_photo
 from db import get_db
 from schemas.portfolio_photo import PortfolioPhotoInDB
-from utils.jwt_utils import require_photographer  # если ограничиваем только фотографам
+from utils.jwt_utils import require_photographer
 
 STATIC_PORTFOLIO_PATH = "static/portfolio"
 

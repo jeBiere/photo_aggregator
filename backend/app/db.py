@@ -26,10 +26,7 @@ postgres_db = os.getenv("POSTGRES_DB", "photo_aggr")
 SQLALCHEMY_DATABASE_URL = f"postgresql://{postgres_user}:{postgres_password}@{postgres_host}/{postgres_db}"
 
 
-# Создаем объект для работы с базой данных
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
-#Base.metadata.create_all(bind=engine, checkfirst=True)
-# Создаем функцию для получения сессии
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 def get_db():

@@ -8,7 +8,6 @@ from alembic import context
 import sys
 import os
 
-# Добавляем путь до корня проекта
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # Импорт моделей

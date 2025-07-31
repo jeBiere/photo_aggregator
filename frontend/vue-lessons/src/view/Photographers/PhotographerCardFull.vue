@@ -100,15 +100,15 @@
 import { computed, ref } from 'vue'
 import PhotographerCalendar from './PhotographerCalendar.vue'
 import CreateOrder from '../CreateOrder.vue'
-import { useAuthStore } from '@/stores/authStore' // Assuming Pinia store for authentication
+import { useAuthStore } from '@/stores/authStore'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
 
 const emit = defineEmits(['close'])
 
 const props = defineProps({
-  photographer: Object, // Объект фотографа, передаваемый из родителя
-  specializations: Array // Массив специализаций, передаваемый из родителя
+  photographer: Object, 
+  specializations: Array 
 })
 
 const authStore = useAuthStore()
@@ -116,40 +116,33 @@ const router = useRouter()
 
 const avatarUrl = computed(() => props.photographer.avatar_url || '/portrait.svg')
 const userId = ref(null)
-const selectedDate = ref(null) // Изначально null, будет обновляться при выборе
-const selectedTime = ref(null) // Изначально null, будет обновляться при выборе
+const selectedDate = ref(null) 
+const selectedTime = ref(null) 
 const isModalVisible = ref(false)
 
-// Функция закрытия модалки
 const closeModal = () => {
   emit('close')
 }
 
-// Функция открытия модалки
 const openModal = () => {
   console.log('Open modal')
   isModalVisible.value = true
 }
 
-// Функция для подтверждения бронирования
 const handleBookingConfirm = (orderData) => {
-  // Обработка подтверждения бронирования
   console.log(orderData)
 }
 
-// Получаем информацию о пользователе и заказах
 const fetchProfile = async () => {
   if (!authStore.isAuthenticated) {
-    // Если токен отсутствует, перенаправляем на страницу логина
     router.push('/login')
     return
   }
 
   try {
-    const token = authStore.token // Получаем токен из Pinia store
+    const token = authStore.token 
     const headers = { Authorization: `Bearer ${token}` }
 
-    // Получаем данные пользователя
     const { data: userData } = await axios.get('http://localhost:8000/users/me', { headers })
     userId.value = userData.user_id
   } catch (error) {
@@ -157,12 +150,10 @@ const fetchProfile = async () => {
   }
 }
 
-// Обработчик для обновления выбранной даты
 const updateSelectedDate = (date) => {
   selectedDate.value = date
 }
 
-// Обработчик для обновления выбранного времени
 const updateSelectedTime = (time) => {
   selectedTime.value = time
 }
@@ -184,12 +175,12 @@ fetchProfile()
 }
 
 .calendar-container {
-  flex: 1; /* Позволяет календарю расти */
+  flex: 1; 
   width: 100%;
-  min-height: 400px; /* Минимальная высота */
+  min-height: 400px;
   background: white;
   border-radius: 12px;
-  overflow: visible; /* Разрешаем элементам выходить за границы */
+  overflow: visible;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 .modal-overlay {
@@ -212,7 +203,7 @@ fetchProfile()
   padding: 40px;
   width: 90%;
   max-width: 1000px;
-  max-height: 95vh; /* Увеличил max-height */
+  max-height: 95vh; 
   overflow-y: auto;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
@@ -244,7 +235,7 @@ fetchProfile()
   width: 95%;
   max-width: 1400px;
   padding: 30px;
-  max-height: 95vh; /* Больше пространства для календаря */
+  max-height: 95vh; 
 }
 
 .right-section.full-height {
@@ -252,9 +243,9 @@ fetchProfile()
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  min-height: 500px; /* Гарантируем, что календарь влезет */
-  max-height: calc(100% - 100px); /* Делаем высоту гибкой */
-  overflow-y: auto; /* Если что-то не влезает, пусть прокручивается */
+  min-height: 500px; 
+  max-height: calc(100% - 100px); 
+  overflow-y: auto; 
 }
 
 .close-button:hover {

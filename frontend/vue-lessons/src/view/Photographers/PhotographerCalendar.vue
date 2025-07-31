@@ -53,9 +53,8 @@ const props = defineProps({
 const selectedDate = ref(null)
 const selectedSlots = ref([])
 const availableDates = ref({})
-const activeSlot = ref(null) // Храним активный интервал
+const activeSlot = ref(null) 
 
-// Получаем доступные даты
 async function fetchAvailableDates(year, month) {
   const start = new Date(year, month, 1)
   const end = new Date(year, month + 1, 0)
@@ -78,26 +77,22 @@ async function fetchAvailableDates(year, month) {
   }
 }
 
-// Обрабатываем клик по ячейке календаря
 function handleDayClick(date) {
   const clickedDate = new Date(date)
   clickedDate.setDate(clickedDate.getDate() + 1)
-  const dateStr = clickedDate.toISOString().split('T')[0] // Преобразуем дату в строку
+  const dateStr = clickedDate.toISOString().split('T')[0]
   selectedDate.value = dateStr
   console.log(selectedDate.value)
-  selectedSlots.value = availableDates.value[dateStr] || [] // Обновляем интервалы
+  selectedSlots.value = availableDates.value[dateStr] || [] 
 
-  // Отправляем выбранную дату родительскому компоненту
   emit('dateSelected', selectedDate.value)
   emit('timeSelected', null)
 }
 
-// Обрабатываем смену месяца
 function handleMonthChange(event) {
   console.log('Event received:', event)
 
-  // Используем поле start (или extendedStart) для получения даты
-  const startDate = event.start // Дата начала месяца
+  const startDate = event.start 
   console.log('startDate:', startDate)
 
   if (startDate) {
@@ -111,19 +106,16 @@ function handleMonthChange(event) {
   }
 }
 
-// Устанавливаем активный интервал
 function setActiveSlot(slot) {
   if (activeSlot.value === slot) {
-    activeSlot.value = null // Если кликаем по уже активному, снимаем выделение
+    activeSlot.value = null
     emit('timeSelected', null)
   } else {
-    activeSlot.value = slot // Если кликаем по новому, выделяем его
-    // Отправляем выбранное время родительскому компоненту
+    activeSlot.value = slot 
     emit('timeSelected', activeSlot.value)
   }
 }
 
-// Получаем доступные даты при монтировании
 onMounted(() => {
   const today = new Date()
   fetchAvailableDates(today.getFullYear(), today.getMonth())
@@ -137,7 +129,7 @@ onMounted(() => {
   align-items: flex-start;
   gap: 40px;
   padding: 20px;
-  flex-wrap: wrap; /* на всякий случай для адаптива */
+  flex-wrap: wrap;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -157,7 +149,7 @@ onMounted(() => {
 
 .slots-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* можно увеличить до 3-4 */
+  grid-template-columns: repeat(4, 1fr); 
   gap: 10px;
   margin-top: 10px;
 }

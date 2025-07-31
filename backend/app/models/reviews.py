@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, Text, TIMESTAMP, ForeignKey, Ind
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from sqlalchemy.schema import UniqueConstraint
-from models.base import Base  # Импортируем базовый класс из файла с настройками базы данных
+from models.base import Base 
 
 class Review(Base):
     __tablename__ = "reviews"
@@ -16,12 +16,10 @@ class Review(Base):
     created_at = Column(TIMESTAMP, default=func.current_timestamp())
 
     __table_args__ = (
-        UniqueConstraint('order_id', name='unique_order_review'),  # Уникальность отзыва на заказ
+        UniqueConstraint('order_id', name='unique_order_review'), 
         Index('idx_reviews_photographer', 'photographer_id'),
         Index('idx_reviews_user', 'user_id')
     )
-
-    # Определяем связи (relationship)
     order = relationship("Order", backref="reviews")
     photographer = relationship("Photographer", backref="reviews")
     user = relationship("User", backref="reviews")

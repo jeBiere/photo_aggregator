@@ -35,8 +35,3 @@ class User(Base):
         Index('idx_user_phone', phone),  # Индекс на поле phone
         Index('idx_user_role', role)     # Индекс на поле role
     )
-
-    # Если нужно, можно добавить отношения, например, для связи с заказами или отзывами
-
-    # Например, связь с таблицей отзывов:
-    #orders = relationship("Order", backref="user.user_id")

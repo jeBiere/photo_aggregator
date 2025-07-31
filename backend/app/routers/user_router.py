@@ -8,18 +8,9 @@ from typing import List
 from schemas.user import UserCreate, UserUpdate, UserInDB, UserLogin
 from crud.user import (create_user, get_user, get_users, update_user, delete_user, get_user_by_email, get_user_by_id, get_user_orders, get_user_reviews, update_avatar_url)
 from models.user import User
-
-from schemas.order import OrderInDB
-from models.order import Order
-
 from schemas.reviews import ReviewInDB
-from models.reviews import Review
-
 from db import get_db
-
-from utils.jwt_utils import ( verify_password, get_token, get_current_user, security, require_admin, SECRET_KEY)
-
-from authx import TokenPayload
+from utils.jwt_utils import ( verify_password, get_token, get_current_user, security, require_admin)
 
 AVATAR_FOLDER = "static/avatars"
 
@@ -59,9 +50,9 @@ async def upload_avatar(
 
 @router.get("/me", response_model=UserInDB)
 async def get_current_user_info(
-    current_user: User = Depends(get_current_user)  # Заменяем логику с декодированием токена
+    current_user: User = Depends(get_current_user)
 ):
-    return current_user  # Прямо возвращаем текущего пользователя
+    return current_user
 
 @router.get("/reviews", response_model=List[ReviewInDB])
 def read_user_reviews(

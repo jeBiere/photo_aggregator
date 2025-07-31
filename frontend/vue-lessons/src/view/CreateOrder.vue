@@ -98,7 +98,6 @@ const fetchPhotographerInfo = async () => {
     )
     photographerPrice.value = parseFloat(photographer.price_per_hour) || 0
 
-    // Получаем имя и фамилию фотографа по user_id
     const userId = photographer.user_id
     const { data: user } = await axios.get(`http://localhost:8000/users/user_by_id/${userId}`)
     photographerName.value = `${user.first_name} ${user.last_name}`
@@ -231,7 +230,6 @@ const confirmBooking = async () => {
   @apply text-xl font-semibold text-slate-700;
 }
 
-/* Анимация смены числа */
 .fade-scale-enter-active,
 .fade-scale-leave-active {
   transition: all 0.3s ease;

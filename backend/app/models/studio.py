@@ -21,7 +21,6 @@ class PhotoStudio(Base):
     orders = relationship("Order", backref="studio", lazy="dynamic")
     photos = relationship("StudioPhoto", back_populates="studio", cascade="all, delete-orphan")
     
-    # Индексы
     __table_args__ = (
         Index('idx_studio_name', 'studio_name'),
         Index('idx_studio_email', 'email'),

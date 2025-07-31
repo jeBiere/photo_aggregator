@@ -93,7 +93,6 @@ const uploadPhotos = async () => {
         }
       }
     )
-    // После успешной загрузки, передаем фото в родительский компонент
     emit('photo-uploaded', response.data)
     close()
   } catch (error) {
@@ -104,7 +103,6 @@ const uploadPhotos = async () => {
 </script>
 
 <style scoped>
-/* Стили для модалки */
 .fixed {
   position: fixed;
   top: 0;

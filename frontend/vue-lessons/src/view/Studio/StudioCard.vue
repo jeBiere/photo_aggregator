@@ -69,6 +69,5 @@ const showModal = ref(false)
 
 const showDetails = () => {
   showModal.value = true
-  // Можно подключить StudioCardFull.vue при необходимости
 }
 </script>

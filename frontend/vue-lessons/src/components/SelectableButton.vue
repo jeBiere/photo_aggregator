@@ -7,7 +7,6 @@
 <script setup>
 import { ref, defineProps, defineEmits } from 'vue'
 
-// props
 const props = defineProps({
   text: {
     type: String,
@@ -32,19 +31,19 @@ const toggleActive = () => {
   background-color: #dcdcdc;
   color: #333;
   padding: 8px 16px;
-  border-radius: 20px; /* Закругляем только края */
+  border-radius: 20px; 
   margin: 5px;
   cursor: pointer;
   text-align: center;
   font-size: 14px;
   transition: background-color 0.3s ease;
-  border-top-left-radius: 20px; /* Закругление только левого верхнего угла */
-  border-bottom-left-radius: 20px; /* Закругление только левого нижнего угла */
-  border-top-right-radius: 20px; /* Прямой угол справа сверху */
-  border-bottom-right-radius: 20px; /* Прямой угол справа снизу */
+  border-top-left-radius: 20px; 
+  border-bottom-left-radius: 20px; 
+  border-top-right-radius: 20px; 
+  border-bottom-right-radius: 20px; 
 }
 
 .selectable-button.active {
-  background-color: #ffedd5; /* Бежевый цвет при активном состоянии */
+  background-color: #ffedd5; 
 }
 </style>

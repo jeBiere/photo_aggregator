@@ -19,11 +19,11 @@ class UserBase(BaseModel):
     city: str
     avatar_url: Optional[str] = None
     status: str = "active"
-    role: UserRole = UserRole.client  # Используем перечисление для роли
+    role: UserRole = UserRole.client 
 
 # Схема для создания пользователя (регистрация)
 class UserCreate(UserBase):
-    password: str  # Передается открытым текстом, будет хешироваться
+    password: str 
 
 # Схема для обновления пользователя
 class UserUpdate(BaseModel):
@@ -50,8 +50,8 @@ class UserInDB(UserBase):
 
 # Схема для логина пользователя
 class UserLogin(BaseModel):
-    login: str  # Логин
-    password: str  # Пароль (в открытом виде)
+    login: str 
+    password: str 
 
     class Config:
         orm_mode = True

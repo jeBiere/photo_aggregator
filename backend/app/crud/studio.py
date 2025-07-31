@@ -12,7 +12,6 @@ def get_studios(db: Session, skip: int = 0, limit: int = 100):
 def create_studio(db: Session, studio: PhotoStudioCreate):
     studio_data = studio.dict()
     
-    # Преобразуем HttpUrl в строки (иначе SQLAlchemy не поймёт)
     if studio_data.get("website_url"):
         studio_data["website_url"] = str(studio_data["website_url"])
     if studio_data.get("profile_picture_url"):

@@ -83,11 +83,9 @@
 </template>
 
 <script setup>
-// Можно добавить логику, если нужно получать данные через API.
 </script>
 
 <style scoped>
-/* Общие стили */
 h1,
 h2 {
   color: #2d3748;
@@ -109,7 +107,6 @@ h2 {
   font-weight: 600;
 }
 
-/* Стили для контейнера */
 .max-w-lg {
   max-width: 36rem;
 }
@@ -126,7 +123,6 @@ h2 {
   padding: 2rem;
 }
 
-/* Стили для списка преимуществ */
 .list-disc {
   list-style-type: disc;
 }

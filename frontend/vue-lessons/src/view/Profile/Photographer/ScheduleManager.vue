@@ -1,8 +1,6 @@
 <template>
   <div class="bg-white p-6 rounded-lg shadow-md mt-8 border border-orange-200">
     <h2 class="text-2xl font-semibold text-slate-700 mb-4">Manage Your Working Hours</h2>
-
-    <!-- Weekday schedule -->
     <div class="grid grid-cols-7 gap-4">
       <div v-for="(day, index) in daysOfWeek" :key="index" class="flex flex-col items-center">
         <span class="font-semibold text-slate-600">{{ day }}</span>
@@ -10,13 +8,9 @@
         <Select v-model="schedule[index].end" :options="hourOptions" placeholder="End Time" />
       </div>
     </div>
-
-    <!-- Save schedule button -->
     <div class="flex justify-center mt-6">
       <Button label="Save Schedule" @click="saveSchedule" />
     </div>
-
-    <!-- Add time off exceptions -->
     <div class="mt-8">
       <h3 class="text-xl font-semibold text-slate-600 mb-4">Add Time Off / Exceptions</h3>
       <div class="flex flex-col gap-4">
@@ -78,7 +72,6 @@ onMounted(async () => {
     const workingHours = res.data
 
     workingHours.forEach(({ day_of_week, start_time, end_time }) => {
-      // Парсим часы из формата "HH:MM:SS"
       const startHour = parseInt(start_time.split(':')[0])
       const endHour = parseInt(end_time.split(':')[0])
       schedule.value[day_of_week] = {
@@ -97,18 +90,15 @@ onMounted(async () => {
   @apply bg-white border rounded-xl p-2 text-slate-600 font-medium shadow-md focus:outline-none focus:ring-2 focus:ring-orange-300;
 }
 
-/* Button and Input focus */
 button:focus,
 .custom-input:focus {
   @apply ring-2 ring-orange-300;
 }
 
-/* Button Customization */
 button {
   @apply bg-orange-100 hover:bg-orange-200 text-slate-600 font-bold py-2 px-4 rounded-3xl mt-8 transition ease-in-out duration-300 uppercase;
 }
 
-/* Button width control */
 button.w-auto {
   width: auto;
 }

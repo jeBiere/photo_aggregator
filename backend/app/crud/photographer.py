@@ -48,16 +48,14 @@ def get_filtered_photographers(
 ) -> List[Photographer]:
     query = db.query(Photographer)
     
-    # Фильтр по городу (опционально)
     if city:
-        query = query.filter(Photographer.city == city)  # Предполагаем, что поле есть
+        query = query.filter(Photographer.city == city) 
     
-    # Фильтр по специализациям (через связанную таблицу)
     if specializations:
         query = (
             query.join(PhotographerSpecialization)
             .filter(PhotographerSpecialization.specialization.in_(specializations))
-            .distinct()  # Важно!
+            .distinct() 
         )
     
     # Фильтр по цене
@@ -79,7 +77,6 @@ def get_sorted_by_relevance(
 
     photographer_ids = [p.photographer_id for p in photographers]
 
-    # Преобразуем веса в Decimal
     rating_weight_dec = Decimal(str(rating_weight))
     orders_weight_dec = Decimal(str(orders_weight))
     reviews_weight_dec = Decimal(str(reviews_weight))

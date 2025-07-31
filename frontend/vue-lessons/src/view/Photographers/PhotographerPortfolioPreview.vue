@@ -90,7 +90,6 @@ const fetchPortfolioPhotos = async () => {
     )
     photos.value = res.data.flatMap((item) => item.photos || [])
     await nextTick()
-    // Обеспечиваем актуальность photoRefs
     photoRefs.value = photoRefs.value.slice(0, photos.value.length)
   } catch (error) {
     console.error('Ошибка при загрузке портфолио:', error)

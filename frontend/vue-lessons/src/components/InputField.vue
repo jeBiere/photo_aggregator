@@ -48,7 +48,7 @@ const props = defineProps({
   },
   rows: {
     type: Number,
-    default: 4 // можно изменить при необходимости
+    default: 4 
   }
 })
 </script>

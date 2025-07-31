@@ -49,7 +49,6 @@ const maxPrice = ref(10000)
 const allSpecializations = ref([])
 const sliderProgress = ref(100)
 
-// Получаем уникальные специализации
 const uniqueSpecializations = computed(() => {
   const specs = allSpecializations.value.map((item) => item.specialization)
   return [...new Set(specs)]
@@ -98,7 +97,6 @@ const emitFilters = () => {
   border-radius: 20px;
   padding: 20px;
   margin: 20px auto;
-  /*max-width: 1100px;*/
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
@@ -176,7 +174,7 @@ const emitFilters = () => {
   margin: 0;
   opacity: 0;
   cursor: pointer;
-  z-index: 3; /* Выше ползунка */
+  z-index: 3; 
 }
 
 .slider-thumb {

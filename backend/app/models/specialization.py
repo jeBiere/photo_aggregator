@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, Enum, ForeignKey, Index
 from sqlalchemy.orm import relationship
-from models.base import Base  # если база объявлена отдельно
+from models.base import Base
 import enum
 
 

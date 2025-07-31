@@ -21,10 +21,10 @@ class PhotoStudioBase(BaseModel):
 
 # Схема для создания новой фотостудии
 class PhotoStudioCreate(PhotoStudioBase):
-    pass  # Здесь можно добавить дополнительные поля или логику, если необходимо
+    pass  
 
 class PhotoStudioUpdate(PhotoStudioBase):
-    pass  # Здесь можно добавить дополнительные поля или логику, если необходимо
+    pass
 
 # Схема для вывода данных о фотостудии (например, в ответах API)
 class PhotoStudioInDB(PhotoStudioBase):

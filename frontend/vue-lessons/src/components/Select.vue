@@ -1,6 +1,5 @@
 <template>
   <div class="relative inline-block w-full max-w-xs">
-    <!-- Кнопка-селект -->
     <button
       @click="toggleDropdown"
       class="rounded-2xl bg-orange-50 text-slate-600 px-4 py-2 text-left shadow hover:bg-orange-100 transition-all duration-300 my-2 w-full"
@@ -8,7 +7,6 @@
       {{ selectedLabel }}
     </button>
 
-    <!-- Dropdown -->
     <transition name="fade-slide">
       <ul
         v-if="isOpen"
@@ -88,7 +86,6 @@ const selectedLabel = computed(() => {
   transform: translateY(-5px);
 }
 
-/* Кастомный скроллбар (необязательно) */
 ul::-webkit-scrollbar {
   width: 6px;
 }

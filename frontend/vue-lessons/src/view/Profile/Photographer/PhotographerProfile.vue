@@ -111,7 +111,7 @@ const props = defineProps({
 
 const showUploader = ref(false)
 const photographer = ref(null)
-const isLoading = ref(true) // Флаг загрузки
+const isLoading = ref(true) 
 
 const handleAvatarUpdated = (newAvatarUrl) => {
   props.user.avatar_url = newAvatarUrl
@@ -125,7 +125,7 @@ onMounted(async () => {
     } catch (error) {
       console.error('Ошибка при загрузке данных фотографа:', error)
     } finally {
-      isLoading.value = false // Завершаем загрузку, даже если ошибка
+      isLoading.value = false
     }
   }
 })
